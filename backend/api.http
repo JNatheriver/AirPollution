@@ -1,0 +1,4 @@
+GET http://localhost:3000/current?lat=19.284765807761016&lon=-99.61722429703596
+
+###
+GET http://localhost:3000/forecast?lat=19.284765807761016&lon=-99.61722429703596

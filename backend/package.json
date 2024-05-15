@@ -1,0 +1,16 @@
+{
+  "name": "backend",
+  "version": "0.0.1",
+  "type": "module",
+  "description": "Backend for air pollution app",
+  "main": "index.js",
+  "scripts": {
+    "dev": "node --watch index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Jaime Nathaniel",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}
