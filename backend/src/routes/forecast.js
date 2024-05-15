@@ -1,8 +1,7 @@
 import express from 'express'
+import 'dotenv/config'
 
 const BASE_URL = "http://api.openweathermap.org/data/2.5/air_pollution/forecast"
-
-process.loadEnvFile()
 
 const router = express.Router()
 
