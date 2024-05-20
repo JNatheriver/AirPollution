@@ -8,11 +8,12 @@ import { needleCenter, needlePath, needleThetaOffset} from './needle'
 const { width } = Dimensions.get('screen')
 const DIAMETER = width - 100
 const STROKE_WIDTH = 25
+const TEXT_HEIGHT_OFFSET = 90
 
 const arc = Skia.Path.Make().addArc(
     {
       x: (width - DIAMETER) / 2,
-      y: 150,
+      y: STROKE_WIDTH,
       width: DIAMETER,
       height: DIAMETER
     },
@@ -26,22 +27,20 @@ export function Speedometer({aqi= 0} : {aqi: number}) {
   
     const needleTransform = useDerivedValue(()=> [
       {translateX: width/2 - needleCenter.x},
-      {translateY: 150 + DIAMETER / 2 - needleCenter.y},
+      {translateY: DIAMETER / 2 + STROKE_WIDTH },
       {rotateZ: needleAngle.value},
       {scaleX: 5},
       {scaleY: 5}
     ])
   
     const needleMeasureString = useDerivedValue(()=> needleMeasure.value.toFixed(2))
-  
+    const font = useFont(require("../assets/fonts/SpaceMono-Regular.ttf"), 35)
+
     useEffect(() => {
       needleAngle.value = withSpring(needleThetaOffset + interpolate(aqi, [1, 5], [0, Math.PI]), {damping: 10})
       needleMeasure.value = withTiming(aqi, {duration: 500})
     }, [aqi])
   
-  
-    const font = useFont(require("../assets/fonts/SpaceMono-Regular.ttf"), 35)
-
     return (
         <Canvas style={styles.container}>
             <Path
@@ -50,12 +49,13 @@ export function Speedometer({aqi= 0} : {aqi: number}) {
             strokeWidth={STROKE_WIDTH}
             strokeCap="round"
             >
-            <LinearGradient
-                start={vec(0,0)}
-                end={vec(width, 0)}
-                colors={["lightgreen", "red"]}
-            />
+              <LinearGradient
+                  start={vec(0,0)}
+                  end={vec(width, 0)}
+                  colors={["lightgreen", "red"]}
+              />
             </Path>
+
             <Path 
             path={needlePath}
             style="fill"
@@ -63,12 +63,14 @@ export function Speedometer({aqi= 0} : {aqi: number}) {
             transform={needleTransform}
             origin={vec(needleCenter.x, needleCenter.y)}
             />
+
             <Text
               x={width/2 - 40}
-              y={210 + DIAMETER / 2}
+              y={TEXT_HEIGHT_OFFSET + DIAMETER / 2}
               text={needleMeasureString}
               font={font}
             />
+
       </Canvas>
     )
 }
@@ -76,6 +78,6 @@ export function Speedometer({aqi= 0} : {aqi: number}) {
 const styles = StyleSheet.create({
     container: {
       width: width,
-      height: DIAMETER + 63
+      height: DIAMETER / 2 + TEXT_HEIGHT_OFFSET
     },
 })

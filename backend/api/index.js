@@ -2,6 +2,7 @@ import express from 'express'
 import forecast from '../src/routes/forecast.js'
 import current from '../src/routes/current.js'
 import 'dotenv/config'
+import process from 'process'
 
 var app = express()
 const port = process.env.PORT || 3000

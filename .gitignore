@@ -1,2 +1,19 @@
+AirPollutionApp/node_modules/
+AirPollutionApp/.expo/
+AirPollutionApp/dist/
+AirPollutionApp/npm-debug.*
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+*.orig.*
+AirPollutionApp/web-build/
+
+# macOS
+AirPollutionApp/.DS_Store
+
+AirPollutionApp/expo-env.d.ts
+
 backend/node_modules
 backend/.env

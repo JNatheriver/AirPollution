@@ -8,7 +8,7 @@ export default function App()
   return (
     <View style={styles.container}>
       <Background/>
-      <View style={{height: 200}}></View>
+      <View style={{height: 100}}></View>
       <Speedometer aqi={sample.list[0]?.main.aqi}/>
       <FlatList
         data={Object.keys(sample.list[0]?.components)}

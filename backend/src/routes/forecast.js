@@ -1,5 +1,6 @@
 import express from 'express'
 import 'dotenv/config'
+import process from 'process'
 
 const BASE_URL = "http://api.openweathermap.org/data/2.5/air_pollution/forecast"
 
