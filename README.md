@@ -1,6 +1,8 @@
 # AirPollutionApp: A React Native App for Air Quality Monitoring
 This project demonstrates the development of a React Native application that fetches and displays air quality data from the OpenWeatherMap API. The backend utilizes Express.js and Node.js to handle API requests and hide the OpenWeatherMap API key.
 
+https://github.com/JNatheriver/AirPollution/assets/119390321/fd36631c-0263-48f5-8bbd-0dad0dcc50ee
+
 ## Project Structure
 ### Backend:
 * Uses Express.js and Node.js to handle API requests.
@@ -39,3 +41,7 @@ This project demonstrates the development of a React Native application that fet
 * Historical Data Tracking: Allow users to track historical air quality data for their location.
 * Air Quality Alerts: Implement air quality alerts to notify users when air quality levels exceed safe thresholds.
 * Personalized Recommendations: Provide personalized recommendations based on air quality data and user preferences.
+
+
+
+
