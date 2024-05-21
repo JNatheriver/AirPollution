@@ -1,14 +1,19 @@
 
 import { useEffect } from 'react'
-import { Canvas, LinearGradient, Path, Skia, vec, Text, useFont} from '@shopify/react-native-skia'
-import { Dimensions, StyleSheet } from 'react-native'
+import { Canvas, LinearGradient, Path, Skia, vec, Text, matchFont, FontSlant, FontWeight} from '@shopify/react-native-skia'
+import { Dimensions, StyleSheet, Platform } from 'react-native'
 import { interpolate, useDerivedValue, useSharedValue, withSpring, withTiming } from 'react-native-reanimated'
 import { needleCenter, needlePath, needleThetaOffset} from './needle'
+
+// Types added because typescript widening hides the types slant and weight, if you remove this types doesn't affect the app, just gets rid of that anoying type error
+type Slant = "normal" | "italic" | "oblique";
+type Weight = "normal" | "bold" | "100" | "200" | "300" | "400" | "500" | "600" | "700" | "800" | "900";
 
 const { width } = Dimensions.get('screen')
 const DIAMETER = width - 100
 const STROKE_WIDTH = 25
 const TEXT_HEIGHT_OFFSET = 90
+const FONT_SIZE = 40
 
 const arc = Skia.Path.Make().addArc(
     {
@@ -20,6 +25,15 @@ const arc = Skia.Path.Make().addArc(
     180,
     180
 )
+
+const fontFamily = Platform.select({ios: 'Helvetica', default: 'serif'})
+const fontStyle : {fontFamily: string, fontSize: number, fontStyle: Slant, fontWeight: Weight} = {
+  fontFamily,
+  fontSize: FONT_SIZE,
+  fontStyle: "italic",
+  fontWeight: "bold",
+} 
+const font = matchFont(fontStyle)
 
 export function Speedometer({aqi= 0} : {aqi: number}) {
     const needleAngle = useSharedValue(needleThetaOffset)
@@ -34,7 +48,6 @@ export function Speedometer({aqi= 0} : {aqi: number}) {
     ])
   
     const needleMeasureString = useDerivedValue(()=> needleMeasure.value.toFixed(2))
-    const font = useFont(require("../assets/fonts/SpaceMono-Regular.ttf"), 35)
 
     useEffect(() => {
       needleAngle.value = withSpring(needleThetaOffset + interpolate(aqi, [1, 5], [0, Math.PI]), {damping: 10})

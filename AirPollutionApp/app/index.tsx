@@ -1,31 +1,7 @@
-import { View, StyleSheet, FlatList, Text } from 'react-native'
-import { Speedometer } from './speedometer'
-import { Background } from './background'
-import sample from'../assets/current-example.json'
+import App from './app';
+import sample from '../assets/current-example.json'
 
-export default function App()
+export default function Index()
 {
-  return (
-    <View style={styles.container}>
-      <Background/>
-      <View style={{height: 100}}></View>
-      <Speedometer aqi={sample.list[0]?.main.aqi}/>
-      <FlatList
-        data={Object.keys(sample.list[0]?.components)}
-        renderItem={({item})=> {
-          return (
-            <View style={{flex: 1}}>
-              <Text>{item}</Text>
-            </View>
-          )
-        }}
-      />
-    </View>
-  )
+  return <App current_pollution_data={sample}/>
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1
-  }
-});
