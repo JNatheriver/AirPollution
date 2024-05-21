@@ -5,48 +5,34 @@ import { Background } from './background'
 import { ConvertComponentsToArray } from './pollution-schemas'
 import type { CurrentPollutionType } from './pollution-schemas'
 import { Palette } from './palette'
-import * as Location from 'expo-location'
 
 export default function App({current_pollution_data} : {current_pollution_data: CurrentPollutionType})
 {
-  const [location, setLocation] = useState<Location.LocationObject>(null!)
-
   const currentAQI = current_pollution_data.list[0].main.aqi
   const currentPollution = current_pollution_data.list[0]
-
-  useEffect(() => {
-    (async () => {
-      let { status } = await Location.requestForegroundPermissionsAsync()
-
-      if (status !== 'granted') {
-        return
-      }
-
-      let location = await Location.getCurrentPositionAsync({})
-      setLocation(location)
-    })()
-  }, [])
 
   return (
     <View style={styles.container}>
       <Background/>
 
-      {location && <Text>Latitude: {location.coords.latitude} Longitude: {location.coords.longitude}</Text>}
-
       <Text style={styles.titleText}>Air Quality Index</Text>
       <Speedometer aqi={currentAQI}/>
-      <Text style={styles.header}>Components</Text>
+      
+      <View style={styles.componentContainer}>
+        <Text style={styles.header}>Components</Text>
+        <FlatList style={styles.list_components}
+            data={ConvertComponentsToArray(currentPollution.components)}
+            renderItem={({item})=> {
+            return (
+                <View style={styles.component}>
+                    <Text style={styles.componentText}>{item.key}</Text>
+                    <Text style={styles.componentMeasure}>{item.value + " μg/m3"}</Text>
+                </View>
+            )
+            }}
+        />
+      </View>
 
-      <FlatList style={styles.list_components}
-        data={ConvertComponentsToArray(currentPollution.components)}
-        renderItem={({item})=> {
-          return (
-            <View style={styles.component}>
-              <Text style={styles.componentText}>{item.key + ": " + item.value + " μg/m3"}</Text>
-            </View>
-          )
-        }}
-      />
     </View>
   )
 }
@@ -62,29 +48,54 @@ const styles = StyleSheet.create({
     alignSelf: 'center'
   },
 
-  header: {
+  componentContainer: {
+    flex: 1,
+    width: '95%',
+    backgroundColor: 'beige',
+    alignSelf: 'center',
+    borderRadius: 20,
+    margin: 0,
+    padding: 0,
     marginTop: 20,
-    fontSize: 30,
-    fontWeight: 'normal',
-    alignSelf: 'center'
+    marginBottom: 20
   },
 
-  componentText: {
-    fontSize: 25,
-    fontWeight: 'semibold',
+  header: {
+    fontSize: 30,
+    fontWeight: 'bold',
+    alignSelf: 'center',
   },
 
   list_components: {
     flex: 1,
+    width: "100%",
+    alignSelf: 'center',
+    marginTop: 20,
   },
 
   component: {
     flex: 1,
+    flexDirection: 'row',
     alignItems: 'center', 
     justifyContent: 'center',
-    backgroundColor: Palette.pacificCyan,
-    borderRadius: 10,
     padding: 10,
-    margin: 10
-  }
+    margin: 3,
+    borderBottomWidth: 2,
+    borderBottomColor: 'gray',
+  },
+
+  componentText: {
+    flex: 1,
+    fontSize: 25,
+    fontWeight: 'bold',
+    textAlign: 'left'
+  },
+
+  componentMeasure: {
+    flex: 2,
+    fontSize: 25,
+    fontWeight: 'semibold',
+    textAlign: 'right',
+    fontStyle: 'italic'
+  },
 });
